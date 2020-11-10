@@ -658,11 +658,11 @@
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 #define X_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Z_MIN_ENDSTOP_INVERTING true  // Jaecen - EZABL - Stock value
+#define Z_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define X_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true // Jaecen - EZABL - Stock value
+#define Z_MIN_PROBE_ENDSTOP_INVERTING true // Jaecen - BLTouch - Stock value
 
 /**
  * Stepper Drivers
@@ -884,7 +884,7 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-#define FIX_MOUNTED_PROBE	// Jaecen - EZABL - Stock config
+//#define FIX_MOUNTED_PROBE
 
 /**
  * Use the nozzle as the probe, as with a conductive
@@ -901,7 +901,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-//#define BLTOUCH
+#define BLTOUCH   // Jaecen - BLTouch - Stock config
 
 /**
  * Pressure sensor with a BLTouch-like interface
@@ -988,18 +988,18 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -51, 5, 0 }	// Jaecen - EZABL - Hero Me Gen5 mount
-												// EZABL_Mount_Narrow_18mm.stl, from docs
+#define NOZZLE_TO_PROBE_OFFSET { -38, 6, 0 }	// Jaecen - BLTouch - Hero Me Gen5 mount docs
+												                      // BLTouch_Wing_Compact.stl with BLTouch_Slider_Compact.stl
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 10
+#define PROBING_MARGIN 0    // Jaecen - BLTouch - Glass bed goes beyond print area
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_SPEED (133*60)
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
+#define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z / 5  // Jaecen - BLTouch - Stock value
 
 // Feedrate (mm/min) for the "accurate" probe of each point
 #define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2)
@@ -1013,7 +1013,7 @@
  * A total of 2 does fast/slow probes with a weighted average.
  * A total of 3 or more adds more slow probes, taking the average.
  */
-#define MULTIPLE_PROBING 2		// Jaecen - EZABL - Stock settings
+#define MULTIPLE_PROBING 2		// Jaecen - BLTouch - Stock settings
 //#define EXTRA_PROBING    1
 
 /**
@@ -1030,8 +1030,8 @@
  * Example: `M851 Z-5` with a CLEARANCE of 4  =>  9mm from bed to nozzle.
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
-#define Z_CLEARANCE_DEPLOY_PROBE   	5 // Jaecen - EZABL - Stock settings
-#define Z_CLEARANCE_BETWEEN_PROBES  3 // Jaecen - EZABL - Stock settings
+#define Z_CLEARANCE_DEPLOY_PROBE   	15  // Jaecen - BLTouch - Stock settings
+#define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
 
@@ -1042,7 +1042,7 @@
 #define Z_PROBE_OFFSET_RANGE_MAX 20
 
 // Enable the M48 repeatability test to test probe accuracy
-#define Z_MIN_PROBE_REPEATABILITY_TEST	// Jaecen - EZABL - Allow for diagnostics
+#define Z_MIN_PROBE_REPEATABILITY_TEST	// Jaecen - ABL - Allow for diagnostics
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -1132,9 +1132,9 @@
 #define X_MIN_POS 0
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 400				// Jaecen - CR-10 - Stock config
+#define X_MAX_POS X_BED_SIZE + 5  // Jaecen - CR-10 - Measured config
+#define Y_MAX_POS Y_BED_SIZE + 5  // Jaecen - CR-10 - Measured config
+#define Z_MAX_POS 400				      // Jaecen - CR-10 - Stock config
 
 /**
  * Software Endstops
@@ -1150,7 +1150,7 @@
 #if ENABLED(MIN_SOFTWARE_ENDSTOPS)
   #define MIN_SOFTWARE_ENDSTOP_X
   #define MIN_SOFTWARE_ENDSTOP_Y
-  //#define MIN_SOFTWARE_ENDSTOP_Z	// Jaecen - EZABL - Stock config
+  //#define MIN_SOFTWARE_ENDSTOP_Z	// Jaecen - BLTouch - Stock config
 #endif
 
 // Max software endstops constrain movement within maximum coordinate bounds
@@ -1238,14 +1238,14 @@
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
 //#define AUTO_BED_LEVELING_BILINEAR
-#define AUTO_BED_LEVELING_UBL			// Jaecen - EZABL - Custom config
+#define AUTO_BED_LEVELING_UBL			// Jaecen - ABL - Custom config
 //#define MESH_BED_LEVELING
 
 /**
  * Normally G28 leaves leveling disabled on completion. Enable
  * this option to have G28 restore the prior leveling state.
  */
-#define RESTORE_LEVELING_AFTER_G28		// Jaecen - EZABL - Custom config
+#define RESTORE_LEVELING_AFTER_G28		// Jaecen - ABL - Custom config
 
 /**
  * Enable detailed logging of G28, G29, M48, etc.
@@ -1269,7 +1269,7 @@
   /**
    * Enable the G26 Mesh Validation Pattern tool.
    */
-  #define G26_MESH_VALIDATION			// Jaecen - EZABL - Custom config, useful for diagnostics
+  #define G26_MESH_VALIDATION			// Jaecen - ABL - Custom config, useful for diagnostics
   #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
     #define MESH_TEST_LAYER_HEIGHT   0.2  // (mm) Default layer height for the G26 Mesh Validation Tool.
@@ -1316,8 +1316,8 @@
 
   //#define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
 
-  #define MESH_INSET 1              // Set Mesh bounds as an inset region of the bed
-  #define GRID_MAX_POINTS_X 7       // Jaecen - EZABL - Custom value
+  #define MESH_INSET 40             // Jaecen - BLTouch - Account for probe X offset
+  #define GRID_MAX_POINTS_X 3       // Jaecen - BLTouch - Custom value
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   #define UBL_MESH_EDIT_MOVES_Z     // Sophisticated users prefer no movement of nozzle
@@ -1388,7 +1388,7 @@
 // - Move the Z probe (or nozzle) to a defined XY point before Z Homing.
 // - Prevent Z homing when the Z probe is outside bed area.
 //
-#define Z_SAFE_HOMING	// Jaecen - EZABL - Stock config
+#define Z_SAFE_HOMING	// Jaecen - BLTouch - Stock config
 
 #if ENABLED(Z_SAFE_HOMING)
   #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing
